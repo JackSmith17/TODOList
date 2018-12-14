@@ -11,5 +11,7 @@ urlpatterns = [
     path('',views.home, name="home"),
     path('delete/<list_id>', views.delete, name ='delete'),
     path('cross_off/<list_id>', views.cross_off, name ='cross_off'),
-    path('uncross/<list_id>', views.uncross, name ='uncross'),
+    path('uncross/<list_id>',   views.uncross, name ='uncross'),
+    path('register',views.RegisterFormView.as_view(), name ='register'),
+    path('login',views.LoginFormView.as_view(), name ='login'),
 ]

@@ -1,8 +1,12 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.views.generic.edit import FormView
 from django.contrib import messages
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm
 from .models import List
 from .forms import ListForm
+from django.contrib.auth import login
 # Create your views here.
 
 # This function is invoked to return html template page to client when the request url is http://localhost:8000/hello_world/hello
@@ -51,5 +55,40 @@ def uncross(request,list_id):
 
     return redirect('home')
 
+
+# Class form registration
+class RegisterFormView(FormView):
+    form_class = UserCreationForm
+    
+    #link to good registration
+    succes_url = "/home/"
+    
+    #template to view
+    template_name = "register.html"
+    
+    def form_valid(self, form):
+        #create user if data valid
+        form.save()
+        
+        return super(RegisterFormView,self).form_valid(self, form)
+    
+ # CLass form authendification
+class LoginFormView(FormView):
+    form_class = AuthenticationForm
+    
+    #login template
+    template_name = "login.html"
+    
+    #if good go home
+    success_url = "/"
+    
+    def form_valid(self,form):
+        self.user = form.get_user()
+    
+        #do auth
+        login(self.request,self.user)
+        return super(LoginFormView, self).form_valid(form)
+    
+    
 
     
