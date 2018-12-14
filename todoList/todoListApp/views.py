@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views.generic.edit import FormView
-from django.contrib import messages
+from django.contrib import messages, auth
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
 from .models import List
@@ -26,11 +26,13 @@ def home(request):
             form.save()
             all_items = List.objects.all
             messages.success(request,('Item has added'))
-            return render(request,'home.html',{'all_items':all_items})
+            return render(request,'home.html',{'all_items':all_items,
+                                               'user': auth.get_user(request).username })
             
     else:
         all_items = List.objects.all
-        return render(request,'home.html',{'all_items':all_items})
+        return render(request,'home.html',{'all_items':all_items,
+                                           'user': auth.get_user(request).username  })
     
 
 def delete(request,list_id):
@@ -90,5 +92,8 @@ class LoginFormView(FormView):
         return super(LoginFormView, self).form_valid(form)
     
     
-
+def logOut(request):
+    auth.logout(request)
+    return redirect('home')
+    
     
