@@ -15,4 +15,5 @@ urlpatterns = [
     path('register',views.RegisterFormView.as_view(), name ='register'),
     path('login',views.LoginFormView.as_view(), name ='login'),
     path('logout',views.logOut, name ='logout'),
+    path('filter',views.filter, name ='filter'),
 ]

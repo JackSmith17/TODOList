@@ -15,17 +15,27 @@
 
 	{% if all_items %}
 		<table class ="table ">
+			<tr class = "table-head">
+					<td>   Task  </td>
+					<td>   Priority  </td>
+					<td> <center>  Undone </center> </td>
+					<td> <center> Delete </center> </td>
+				</tr>
+
+
 		{% for things in all_items %}
 			{% if things.completed %}
 				<tr class = "table-secondary">
 					<td class ="striker">{{ things.itemV }} </td>
-					<td class ="striker"><center>  <a href="{% url 'uncross' things.id %}"> Uncross </center> </td>
+					<td class ="striker">{{ things.priority }} </td>
+					<td class ="striker"><center>  <a href="{% url 'uncross' things.id %}"> Undone </center> </td>
 					<td> <center><a href="{% url 'delete' things.id %}"> Delete</a> </center> </td>
 				</tr>
 			{% else %}
 				<tr>
 					<td>{{ things.itemV }} </td>
-					<td><center> <a href="{% url 'cross_off' things.id %}"> Cross off</a></center> </td>
+					<td>{{ things.priority }} </td>
+					<td><center> <a href="{% url 'cross_off' things.id %}"> Done</a></center> </td>
 					<td> <center><a href="{% url 'delete' things.id %}"> Delete</a> </center> </td>
 				</tr>
 			{% endif %}  

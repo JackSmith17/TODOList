@@ -5,7 +5,7 @@ from django.contrib import messages, auth
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
 from .models import List
-from .forms import ListForm
+from .forms import ListForm, FilterForm
 from django.contrib.auth import login
 # Create your views here.
 
@@ -24,7 +24,6 @@ def home(request):
         
         if form.is_valid():
             post = form.save(commit=False)
-            post.priority = 1
             post.autor = auth.get_user(request).username
             post.save()
             
@@ -38,6 +37,20 @@ def home(request):
         return render(request,'home.html',{'all_items':all_items,
                                            'user': auth.get_user(request).username  })
 
+
+
+
+
+def filter(request):
+   
+    if request.method == 'POST':
+        form = FilterForm(request.POST or None)
+        
+    else:
+        form = FilterForm()
+        return  render(request, 'filter.html', {'form': form})
+        
+    
 
 def filterList(Todolist,username):
     tdlist=[]

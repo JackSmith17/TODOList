@@ -45,8 +45,9 @@
 		
     <form class="form-inline my-2 my-lg-0" method="POST">
 	{% csrf_token %}
+	  <input class="form-control mr-sm-2" type="number" value="0" min="0" max="5" name="priority" > 
       <input class="form-control mr-sm-2" type="search" placeholder="add Item" aria-label="Search" name= "itemV">
-	  <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Log in</button>
+	  
       <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Add List</button>
     </form>
     
