@@ -6,6 +6,8 @@ from email.policy import default
 class List(models.Model):
     itemV = models.CharField(max_length = 100)
     completed = models.BooleanField(default = False)
+    priority = models.PositiveSmallIntegerField(default = 0)
+    autor =  models.CharField(max_length = 100,default = "")
     
     def __str__(self):
         return self.itemV + '|'+ str(self.completed)

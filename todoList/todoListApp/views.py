@@ -23,17 +23,32 @@ def home(request):
         form = ListForm(request.POST or None)
         
         if form.is_valid():
-            form.save()
-            all_items = List.objects.all
+            post = form.save(commit=False)
+            post.priority = 1
+            post.autor = auth.get_user(request).username
+            post.save()
+            
+            all_items = List.objects.filter(autor=auth.get_user(request).username)  #filterList(List.objects.all,auth.get_user(request).username)
             messages.success(request,('Item has added'))
             return render(request,'home.html',{'all_items':all_items,
                                                'user': auth.get_user(request).username })
             
     else:
-        all_items = List.objects.all
+        all_items = List.objects.filter(autor=auth.get_user(request).username) # filterList(List.objects.all,auth.get_user(request).username)
         return render(request,'home.html',{'all_items':all_items,
                                            'user': auth.get_user(request).username  })
+
+
+def filterList(Todolist,username):
+    tdlist=[]
+    for tv in Todolist:
+        if tv.autor ==username :
+            tdlist.append(tv)
     
+    return tdlist
+    
+
+
 
 def delete(request,list_id):
     item = List.objects.get( pk = list_id)
