@@ -48,12 +48,20 @@ def filter(request):
    
     if request.method == 'POST':
         form = FilterForm(request.POST or None)
-        
         priort = form['priority'].value()
+        isdone = form['do_status'].value()
         
-        List.objects.filter(priority = priort).update(filter=True)
-        List.objects.filter(~Q(priority = priort) ).update(filter=False)
-        
+        if "cancel" in request.POST:
+            List.objects.all().update(filter = True)
+        else:
+           
+            if isdone == None:   #  all fields without done
+                List.objects.filter(priority = priort).update(filter=True)
+                List.objects.filter(~Q(priority = priort) ).update(filter=False)
+            else:
+                List.objects.filter(priority = priort, completed = isdone).update(filter=True)
+                List.objects.filter(~Q(priority = priort, completed = isdone) ).update(filter=False)
+            
          
         return redirect('home')   
     
