@@ -20,23 +20,34 @@ def hello_world(request):
 
 def home(request):
     #return render(request,"home.html",{})
+    usser= auth.get_user(request)
+    
     if request.method == 'POST':
         form = ListForm(request.POST or None)
+        
         
         if form.is_valid():
             post = form.save(commit=False)
             post.autor = auth.get_user(request).username
             post.save()
             
-            all_items = List.objects.filter(autor=auth.get_user(request).username,
-                                            filter = True)  #filterList(List.objects.all,auth.get_user(request).username)
+            if usser.is_staff:
+                all_items = List.objects.filter(filter = True) 
+            else:
+                all_items = List.objects.filter(autor=usser.username,
+                                                filter = True)  #filterList(List.objects.all,auth.get_user(request).username)
+             
             messages.success(request,('Item has added'))
             return render(request,'home.html',{'all_items':all_items,
                                                'user': auth.get_user(request).username })
             
     
-    all_items = List.objects.filter(autor=auth.get_user(request).username,
-                                    filter = True).order_by('completed')  # filterList(List.objects.all,auth.get_user(request).username)
+    if usser.is_staff:
+        all_items = List.objects.filter(filter = True) 
+    else:
+        all_items = List.objects.filter(autor=usser.username,
+                                        filter = True)  #filterList(List.objects.all,auth.get_user(request).username)
+            
     return render(request,'home.html',{'all_items':all_items,
                                            'user': auth.get_user(request).username  })
 
