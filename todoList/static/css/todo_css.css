@@ -6,4 +6,13 @@
 tr.table-head {
 	
 	border-bottom:4pt solid black;
+	font-weight:bold;
+}
+
+
+
+.button-form{
+	margin: 0 auto; 
+	width:250px;
+	
 }

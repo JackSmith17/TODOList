@@ -31,12 +31,18 @@
 				{% if user %}
 					<li> <a href = "logout"> Log out ({{user}}) </a> </li>
 				{% else %}
-					<li> <a href = "login"> log in </a> </li>
+					<li> <a href = "login"> Log in </a> </li>
 				{% endif %}
+					<li> <a href = "register"> Register </a> </li>
 			</ul>
 		</section>
 	</div>
   
+<center> 
+	<form  class="button-form" action="filter" >
+	    <input class="btn btn-outline-secondary my-2 my-sm-0" type="submit" value="Filter" />
+	</form>
+</center>
   
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">

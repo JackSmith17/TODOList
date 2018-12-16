@@ -32,9 +32,9 @@ def home(request):
             return render(request,'home.html',{'all_items':all_items,
                                                'user': auth.get_user(request).username })
             
-    else:
-        all_items = List.objects.filter(autor=auth.get_user(request).username) # filterList(List.objects.all,auth.get_user(request).username)
-        return render(request,'home.html',{'all_items':all_items,
+    
+    all_items = List.objects.filter(autor=auth.get_user(request).username).order_by('completed')  # filterList(List.objects.all,auth.get_user(request).username)
+    return render(request,'home.html',{'all_items':all_items,
                                            'user': auth.get_user(request).username  })
 
 
