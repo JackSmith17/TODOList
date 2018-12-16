@@ -8,6 +8,7 @@ class List(models.Model):
     completed = models.BooleanField(default = False)
     priority = models.PositiveSmallIntegerField(default = 0)
     autor =  models.CharField(max_length = 100,default = "")
+    filter = models.BooleanField(default = True)
     
     def __str__(self):
         return self.itemV + '|'+ str(self.completed)

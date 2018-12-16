@@ -4,6 +4,7 @@ from django.views.generic.edit import FormView
 from django.contrib import messages, auth
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
+from django.db.models import Q
 from .models import List
 from .forms import ListForm, FilterForm
 from django.contrib.auth import login
@@ -27,13 +28,15 @@ def home(request):
             post.autor = auth.get_user(request).username
             post.save()
             
-            all_items = List.objects.filter(autor=auth.get_user(request).username)  #filterList(List.objects.all,auth.get_user(request).username)
+            all_items = List.objects.filter(autor=auth.get_user(request).username,
+                                            filter = True)  #filterList(List.objects.all,auth.get_user(request).username)
             messages.success(request,('Item has added'))
             return render(request,'home.html',{'all_items':all_items,
                                                'user': auth.get_user(request).username })
             
     
-    all_items = List.objects.filter(autor=auth.get_user(request).username).order_by('completed')  # filterList(List.objects.all,auth.get_user(request).username)
+    all_items = List.objects.filter(autor=auth.get_user(request).username,
+                                    filter = True).order_by('completed')  # filterList(List.objects.all,auth.get_user(request).username)
     return render(request,'home.html',{'all_items':all_items,
                                            'user': auth.get_user(request).username  })
 
@@ -45,6 +48,15 @@ def filter(request):
    
     if request.method == 'POST':
         form = FilterForm(request.POST or None)
+        
+        priort = form['priority'].value()
+        
+        List.objects.filter(priority = priort).update(filter=True)
+        List.objects.filter(~Q(priority = priort) ).update(filter=False)
+        
+         
+        return redirect('home')   
+    
         
     else:
         form = FilterForm()
